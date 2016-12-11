@@ -1,0 +1,27 @@
+function mkcd() { mkdir -p "$@" && eval cd "\"\$$#\""; }
+function sanitize() { chmod -R u=rwX,g=rX,o=rX "$@" ;}
+
+function myps() { ps $@ -u $USER -o pid,%cpu,%mem,bsdtime,command ; }
+function pp() { myps f | awk '!/awk/ && $0~var' var=${1:-".*"} ; }
+
+# Creates an archive (*.tar.gz) from given directory.
+function maketar() { tar cv "${1%%/}/" | pigz -3 > "${1%%/}.tar.gz" ; }
+# Create a ZIP archive of a file or folder.
+function makezip() { zip -r "${1%%/}.zip" "$1" ; }
+
+function md5rec() { find "${1%%/}" -type f -print0 | xargs -0 md5sum ; }
+function gpg-symm() { gpg --output "${1}.gpg" --symmetric "${1}" ; }
+
+# Swap 2 filenames around, if they exist (from Uzi's bashrc).
+function swap()
+{
+    local TMPFILE=tmp.$$
+
+    [ $# -ne 2 ] && echo "swap: 2 arguments needed" && return 1
+    [ ! -e $1 ] && echo "swap: $1 does not exist" && return 1
+    [ ! -e $2 ] && echo "swap: $2 does not exist" && return 1
+
+    mv "$1" $TMPFILE
+    mv "$2" "$1"
+    mv $TMPFILE "$2"
+}

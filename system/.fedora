@@ -1,0 +1,14 @@
+alias dpnone="xrandr --output DP1-1 --off --output DP1-2 --off --output DP1-3 --off"
+alias dpwork="bash $HOME/.screenlayout/relenda_hoch.sh"
+alias dphome="bash $HOME/.screenlayout/zuhause_hoch.sh"
+
+alias webstart="sudo systemctl start httpd.service && sudo systemctl start mariadb.service"
+
+alias lba_written="sudo smartctl --all /dev/sda | grep -oP 'Total_LBAs_Written.*\s\K\d+$' | awk '{print \"scale=2;\"\$0\"*512/1024^3\"}'|bc"
+alias serveradm="ssh-add -t1h ~/.ssh/id_relenda"
+
+export JAVA_HOME="/usr/lib/jvm/jre"
+export VDPAU_DRIVER=va_gl
+
+export GOPATH=$HOME/.go
+export PATH=$GOPATH:$GOPATH/bin:$PATH

@@ -1,0 +1,42 @@
+# User specific aliases and functions
+alias sl="ls"
+alias la="l"
+alias cd..="cd .."
+alias treeish='tree -Csuh'
+alias mkdir='mkdir -p'
+alias trim="sudo fstrim -va"
+alias meldit="meld \`readlink -f .\`"
+alias isotime="date +%FT%T"
+alias yum="dnf"
+alias nokey_ssh="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+alias vlcdvd="vlc /dev/cdrom"
+alias 3cal="cal -3"
+alias cal3="cal -3"
+alias smartcheck="sudo smartctl --all /dev/sda|less"
+alias ipy="ipython"
+alias iftop="sudo iftop -i any -B"
+alias psmem='ps aux | sort -nr -k 4'
+alias path="echo -e \${PATH//:/\\\\n}"
+
+# networking
+alias ports="netstat -tulapn"
+alias header="curl -I"
+
+# git shorthands
+alias gits="git status"
+alias gitl="git log --decorate"
+alias gitdc="git diff --cached"
+alias gitc="git commit"
+alias gitb="git branch"
+alias gsu="git submodule update"
+alias gitcm="git checkout master"
+
+# openssl shorthans
+alias openssl_https="openssl s_client -showcerts -connect"
+alias openssl_text="openssl x509 -noout -text -in"
+alias readcert="openssl_text"
+
+# safety nets
+alias chown='chown --preserve-root'
+alias chmod='chmod --preserve-root'
+alias chgrp='chgrp --preserve-root'

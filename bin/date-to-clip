@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo -n `date -I` | xclip -sel clip

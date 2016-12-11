@@ -1,0 +1,26 @@
+#!/bin/bash
+
+MOUNTOPT=()
+MOUNTPT=""
+ID=`id -u`
+FSLOPT=(--verbose -o username=truebe,nounix,sec=ntlmv2,uid=$ID,gid=users,users,user)
+
+case "$1" in
+	"fsl")
+		if [ ! -z "$2" ]; then
+			POINT="$2"
+		else
+			POINT="public"
+		fi
+		MOUNTPT="/mnt/$2"
+		MOUNTOPT=(//192.168.178.60/$POINT $MOUNTPT ${FSLOPT[@]})
+		sudo mkdir -p $MOUNTPT;
+		;;
+	*)
+		echo "Unknown" 1>&2
+		;;
+esac
+
+echo "${MOUNTOPT[@]}"
+sudo mount.cifs "${MOUNTOPT[@]}"
+cd $MOUNTPT

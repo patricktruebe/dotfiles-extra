@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+# https://fedoraproject.org/wiki/FedUp#Cleaning_Up_Post_Upgrade
+
+sudo rpm --rebuilddb
+sudo dnf distro-sync --setopt=deltarpm=0
+sudo dnf install rpmconf
+sudo rpmconf -a
+sudo dnf remove google-chrome-stable && sudo dnf install google-chrome-stable
