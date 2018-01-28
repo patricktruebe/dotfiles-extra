@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo -n `date -I` | xclip -sel clip
+echo -n `date -I` | xsel -b
