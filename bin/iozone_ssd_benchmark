@@ -82,7 +82,7 @@ if [ ! $ARGS -lt "5" ]; then
     else
         RECORDSIZE=$6"m"
     fi
-    
+
     # Set no. threads
     if [ -z "$7" ]; then
         echo "Testing with 1, 2 & 3 threads (default)"
