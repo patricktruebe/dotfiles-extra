@@ -1,0 +1,192 @@
+" vim configuration sources:
+"  - http://nvie.com/posts/how-i-boosted-my-vim/
+"  - http://lucumr.pocoo.org/2010/7/29/sharing-vim-tricks/
+
+let mapleader = ","
+execute pathogen#infect()
+syntax on
+filetype indent plugin on
+set background=dark
+colorscheme zenburn
+
+" Save commands
+inoremap <F4> <Esc>:update<CR>a
+nnoremap <F4> :update<CR>
+nnoremap <silent> <leader>w :update<CR>
+" Folding commands
+noremap <silent> <Enter> zR
+" Dont jump over text wrapped lines
+map j gj
+map k gk
+" Highlight commands
+noremap <silent> <Space> :silent noh<CR>
+" Tab commands
+noremap <silent> <leader>h gT
+noremap <silent> <leader>l gt
+noremap <C-t> :tabnew<CR>
+
+" Compile commands
+noremap <silent> <leader>m :update<Bar>make<CR>
+nnoremap <silent> <leader>el :clist<CR>
+nnoremap <silent> <leader>en :cnext<CR>
+nnoremap <silent> <leader>ep :cprevious<CR>
+
+" Insert mode options
+inoremap <S-Tab> <C-R>=CleverTab(1)<CR>
+
+" Window Mamagement
+noremap <C-h> <C-w>h
+noremap <C-l> <C-w>l
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+noremap <C-q> <C-w>q
+
+" Open vimrc
+nmap <silent> <leader>ev :e $MYVIMRC<CR>
+" Execute vimrc
+nmap <silent> <leader>sv :so $MYVIMRC<CR>
+set pastetoggle=<F2>
+
+"don't outdent hashes
+"http://stackoverflow.com/questions/2360249/vim-automatically-removes-indentation-on-python-comments
+"inoremap # X<BS>#
+
+" Feel the force... ;-)
+map <up> <nop>
+map <down> <nop>
+map <left> <nop>
+map <right> <nop>
+
+" save as root
+cmap W! w !sudo tee % >/dev/null
+" don't leave the home line for saving
+inoremap jj <ESC>
+
+" the PC is fast enough, do syntax highlight syncing from start
+autocmd BufEnter * :syntax sync fromstart
+
+set autoindent
+set autochdir
+set backspace=2
+set completeopt=longest,menuone,preview 
+set cindent
+set clipboard=unnamedplus
+set encoding=utf-8
+set foldmethod=syntax
+set foldlevel=2
+set foldnestmax=3
+set foldopen=block,insert,jump,mark,percent,quickfix,search,tag,undo
+set hidden
+set history=1000
+set hlsearch
+set ignorecase
+set incsearch
+set laststatus=2
+set lbr "line break in full words
+set nocompatible
+set noerrorbells
+set noexpandtab
+set novisualbell
+set number
+set ruler
+set relativenumber
+set scrolloff=8 "set context around cursor line
+set shiftwidth=2
+set shiftround
+set showcmd
+set showmatch
+set smartcase
+set smartindent
+set statusline=%<%f\ %m%a%=%([%R%H%Y]%)\ %-19(%3l\ of\ %L,%c%)%P
+set tabstop=4
+set title
+set ttyfast
+set undolevels=1000
+set wildmenu
+set wildignore=*.swp,*.bak,*.pyc,*.class,.git,*.dll,*.o,*.bak,*.exe,*.jpg,*.jpeg,*.png,*.gif,
+set winaltkeys=no
+
+function! CleverTab(mode)
+  if strpart( getline('.'), 0, col('.')-1 ) =~ '^\s*$'
+    return "\<Tab>"
+  else
+    if a:mode == 1
+      return "\<C-N>"
+    else
+      return "\<C-X>\<C-I>"
+endfunction
+
+"Python Settings: vimrc file for following the coding standards specified in PEP 7 & 8.
+"Source: http://svn.python.org/projects/python/trunk/Misc/Vim/vimrc
+
+" Python-specific setup
+au FileType python exe EnablePython()
+
+function! EnablePython()
+  let python_highlight_all=1
+  setlocal tabstop=8 expandtab shiftwidth=4 softtabstop=4
+  map <leader>m <ESC>:update<Bar>!python %<CR>
+  set foldmethod=indent
+  highlight BadWhitespace ctermbg=red guibg=red
+  " Display tabs at the beginning of a line in Python mode as bad.
+  match BadWhitespace /^\t\+/
+  " Make trailing whitespace be flagged as bad.
+  match BadWhitespace /\s\+$/
+  set fileformat=unix
+  set efm=%C\ %.%#,%A\ \ File\ \"%f\"\\,\ line\ %l%.%#,%Z%[%^\ ]%\\@=%m
+  set makeprg=python\ -c\ \"import\ py_compile,sys;\ sys.stderr=sys.stdout;\ py_compile.compile(r'%')\"
+endfunction
+
+au FileType c,cpp exe EnableCPP()
+
+function! EnableCPP()
+  "CPP things
+  set tags+=~/.vim/tags/cpp
+  set tags+=~/.vim/tags/gl
+  set tags+=~/.vim/tags/sdl
+  "header and source switch
+  map <F3> :FSSplitRight<CR>
+  "regen ctags from current directory
+  map <F5> :!ctags -R --sort=yes --c++-kinds=+pl --fields=+iaS --extra=+q .<CR>
+  map <F7> :make<CR>
+  "goto definition
+  map <F12> <C-]>
+  " OmniCppComplete
+  let OmniCpp_NamespaceSearch = 1
+  let OmniCpp_GlobalScopeSearch = 1
+  let OmniCpp_ShowAccess = 1
+  let OmniCpp_ShowPrototypeInAbbr = 1 " show function parameters
+  let OmniCpp_MayCompleteDot = 1 " autocomplete after .
+  let OmniCpp_MayCompleteArrow = 1 " autocomplete after ->
+  let OmniCpp_MayCompleteScope = 1 " autocomplete after ::
+  let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
+  au BufNewFile,BufRead,BufEnter *.cpp,*.hpp set omnifunc=omni#cpp#complete#Main
+  " automatically open and close the popup menu / preview window
+  au CursorMovedI,InsertLeave * if pumvisible() == 0|silent! pclose|endif
+  set completeopt=menuone,menu,longest,preview
+  set comments=sl:/*,mb:\ *,elx:\ */
+endfunction
+
+" boxes (shell tool) integration to vim for c-based langs
+autocmd BufEnter * nmap <leader>bc !!boxes -d shell -p h2 -s 70<CR>
+autocmd BufEnter * vmap <leader>bc !boxes -d shell  -p h2 -s 70<CR>
+autocmd BufEnter * nmap <leader>bx !!boxes -d shell -r<CR>
+autocmd BufEnter * vmap <leader>bx !boxes -d shell -r<CR>
+autocmd BufEnter *.html nmap <leader>bc !!boxes -d html-cmt<CR>
+autocmd BufEnter *.html vmap <leader>bc !boxes -d html-cmt<CR>
+autocmd BufEnter *.html nmap <leader>bx !!boxes -d html-cmt -r<CR>
+autocmd BufEnter *.html vmap <leader>bx !boxes -d html-cmt -r<CR>
+autocmd BufEnter *.[chly],*.[pc]c nmap <leader>bc !!boxes -d c-cmt<CR>
+autocmd BufEnter *.[chly],*.[pc]c vmap <leader>bc !boxes -d c-cmt<CR>
+autocmd BufEnter *.[chly],*.[pc]c nmap <leader>bx !!boxes -d c-cmt -r<CR>
+autocmd BufEnter *.[chly],*.[pc]c vmap <leader>bx !boxes -d c-cmt -r<CR>
+autocmd BufEnter *.C,*.cpp,*.java nmap <leader>bc !!boxes -d java-cmt<CR>
+autocmd BufEnter *.C,*.cpp,*.java vmap <leader>bc !boxes -d java-cmt<CR>
+autocmd BufEnter *.C,*.cpp,*.java nmap <leader>bx !!boxes -d java-cmt -r<CR>
+autocmd BufEnter *.C,*.cpp,*.java vmap <leader>bx !boxes -d java-cmt -r<CR>
+autocmd BufEnter .vimrc*,.exrc nmap <leader>bc !!boxes -d vim-cmt<CR>
+autocmd BufEnter .vimrc*,.exrc vmap <leader>bc !boxes -d vim-cmt<CR>
+autocmd BufEnter .vimrc*,.exrc nmap <leader>bx !!boxes -d vim-cmt -r<CR>
+autocmd BufEnter .vimrc*,.exrc vmap <leader>bx !boxes -d vim-cmt -r<CR>
+
+let g:ansible_options = {'ignore_blank_lines': 0}

@@ -1,0 +1,7 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =5
+let g:netrw_dirhist_1='/home/ptruebe/Develop/dokku/plugins/tags/subcommands'
+let g:netrw_dirhist_2='/etc/fstrim'
+let g:netrw_dirhist_3='/home/ptruebe/8-tools/relenda-pki/pki/PKI/Relenda_Internet_Authority/certs'
+let g:netrw_dirhist_4='/home/ptruebe/8-tools/relenda-pki/pki/PKI/Relenda_Internet_Authority/crl'
+let g:netrw_dirhist_5='/home/ptruebe/8-tools/relenda-pki/pki/PKI/Relenda_Internet_Authority/private'
