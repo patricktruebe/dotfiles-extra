@@ -29,7 +29,7 @@ alias gitdc="git diff --cached"
 alias gitc="git commit"
 alias gitb="git branch"
 alias gsu="git submodule update"
-alias gitcm="git checkout master"
+alias gcm="git checkout master"
 
 # openssl shorthans
 alias openssl_https="openssl s_client -showcerts -connect"
